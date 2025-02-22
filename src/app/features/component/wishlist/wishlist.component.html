@@ -1,0 +1,46 @@
+<div class="container w-11/12 mx-auto mt-5">
+    <table class="w-full bg-white rounded-lg">
+        <thead>
+            <tr>
+                <th class="p-2 text-start pl-10">Product</th>
+                <th class="p-2">Price</th>
+                <th class="p-2 text-center">Actions</th>
+                <th class="p-2">Remove</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (item of products; track $index) {
+            <tr class="border-b py-2">
+                <td class="col-span-1 w-auto p-2 text-center flex items-center gap-4 pl-10 flex-wrap">
+                    <img [src]="item.imageCover" alt="Product 1" class="w-20 h-25 rounded-lg" />
+                    <p class="text-sm text-start">
+                        Woman Bordeaux Long Sleeve Blouse BORDEAUX
+                    </p>
+                </td>
+                <td class="p-2 text-center">{{item.price}}LE</td>
+                <td class="p-2 text-center">
+                    <button type="button"
+                        (click)="addToCart(item.id)"
+                        class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Add</button>
+                </td>
+                <td class="p-2 text-center">
+                    <button (click)="removeFromWatchList(item.id)">
+                        <svg class="hover:text-red-600 w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
+                            xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z" />
+                        </svg>
+                    </button>
+                </td>
+            </tr>
+            }
+            @empty {
+                <tr>
+                    <td colspan="4" class="p-2 text-center">
+                        <app-loader></app-loader>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

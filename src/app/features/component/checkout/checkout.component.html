@@ -1,0 +1,110 @@
+<div class="fixed w-full min-h-[100vh] flex items-center justify-center">
+    @if(totalPrice!==0){
+    <div
+        class="bg-[#ffffff9f] mt-[40px] fixed top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] w-[300px] md:w-[600px] p-6 md:p-10 border rounded-xl">
+        <h1 class="text-3xl font-bold mb-4 ">Checkout</h1>
+        <div class="flex items-center justify-between">
+            <p class="text-base font-black leading-none text-gray-800">Total</p>
+            <p class="text-base font-black leading-none text-gray-800">{{totalPrice}}LE</p>
+        </div>
+        <form class="w-full mx-auto mt-6" [formGroup]="formgroup" (ngSubmit)="createAnOrder(formgroup)">
+            <div class="mb-5">
+                <label for="number" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">phone
+                    number</label>
+                <input type="text" id="number" formControlName="phone"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    required />
+                @if(formgroup.get("phone")?.touched && formgroup.get('phone')?.hasError('required')) {
+                <div class="mt-2 flex items-center p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
+                    role="alert">
+                    <span class="sr-only">Info</span>
+                    <div>
+                        phone number is required
+                    </div>
+                </div>
+                }
+                @else if (formgroup.get("phone")?.touched && formgroup.get('phone')?.hasError("pattern")) {
+                <div class="mt-2 flex items-center p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
+                    role="alert">
+                    <span class="sr-only">Info</span>
+                    <div>
+                        phone number is not valid
+                    </div>
+                </div>
+                }
+
+            </div>
+            <div class="mb-5">
+                <label for="countries" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select your
+                    City</label>
+                <select id="countries" formControlName="city"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                    @for (item of egyptGovernorates; track $index) {
+                    <option value="{{item}}">{{item}}</option>
+                    }
+                </select>
+                @if (formgroup.get("city")?.touched && formgroup.get('city')?.hasError("required")) {
+
+                <div class="mt-2 flex items-center p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
+                    role="alert">
+                    <span class="sr-only">Info</span>
+                    <div>
+                        city is required
+                    </div>
+                </div>
+                }
+            </div>
+
+            <div class="mb-5">
+                <label for="address"
+                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Address</label>
+                <input type="text" id="address" formControlName="address"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    required />
+                @if (formgroup.get("address")?.touched && formgroup.get('address')?.hasError("required")) {
+                <div class="mt-2 flex items-center p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
+                    role="alert">
+                    <span class="sr-only">Info</span>
+                    <div>
+                        address is required
+                    </div>
+                </div>
+                }
+            </div>
+
+            <div class="mb-5">
+                <label for="payment" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Payment
+                    method</label>
+                <select id="countries" formControlName="paymentType"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                    <option value="online" [defaultSelected]="true">Online payment</option>
+                    <option value="cash">Cash On dilivery</option>
+                </select>
+                @if (formgroup.get("paymentType")?.touched && formgroup.get('paymentType')?.hasError("required")) {
+                <div class="mt-2 flex items-center p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
+                    role="alert">
+                    <span class="sr-only">Info</span>
+                    <div>
+                        please select a payment method
+                    </div>
+                </div>
+                }
+                @if (!isLoading) {
+                <button type="submit" [disabled]="!formgroup.valid" [class.bg-gray-300]="!formgroup.valid"
+                    class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
+                }
+                @else {
+                    <button type="submit" [disabled]="!formgroup.valid" [class.bg-gray-300]="!formgroup.valid"
+                        class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                        <i class="fa-solid fa-circle-notch fa-spin"></i>
+                    </button>
+                }
+            </div>
+
+        </form>
+    </div>
+    }
+    @else {
+    <app-loader></app-loader>
+    }
+</div>

@@ -1,0 +1,112 @@
+<div class="w-full h-[100vh] fixed top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] -z-10 background bg-center bg-signinimgMobile lg:bg-signinimgDesktop">
+<div class="bg-[#fffb] fixed top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] w-[300px] md:w-[400px] p-6 md:p-10 border rounded-xl">
+  <h1 class="text-3xl font-bold mb-4 ">Login</h1>
+  <form
+  class="max-w-sm mx-auto"
+  [formGroup]="reactiveForms"
+  (ngSubmit)="getData(reactiveForms)"
+>
+    <div class="mb-5">
+    <label
+      for="email"
+      class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+      >E-Mail</label
+    >
+    <input
+      type="email"
+      id="email"
+      formControlName="email"
+      class=" border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+      required
+    />
+        @if(reactiveForms.get("email")?.touched&&reactiveForms.get("email")?.hasError("required")){
+    <div
+      class="mt-2 flex items-center p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
+      role="alert"
+    >
+      <span class="sr-only">Info</span>
+      <div>
+         E-mail is required
+      </div>
+    </div>
+} 
+        @else if(reactiveForms.get("email")?.touched&&reactiveForms.get("email")?.hasError("email")){
+    <div
+      class="mt-2 flex items-center p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
+      role="alert"
+    >
+      <span class="sr-only">Info</span>
+      <div>
+         enter a valid email
+      </div>
+    </div>
+} 
+  </div>
+
+
+    <div class="mb-5">
+    <label
+      for="password"
+      class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+      >Password</label
+    >
+    <input
+      type="password"
+      id="password"
+      formControlName="password"
+      class=" border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+      required
+    />
+      @if(reactiveForms.get("password")?.touched&&reactiveForms.get("password")?.hasError("required")){
+    <div
+      class="mt-2 flex items-center p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
+      role="alert"
+    >
+      <span class="sr-only">Info</span>
+      <div>
+         Pasword is required
+      </div>
+    </div>
+}  
+      <a class="text-sm text-blue-600 cursor-pointer hover:underline" routerLink="/reset-password" (click)="saveEmail()">
+    forgot password?
+      </a>
+  </div>
+  @if(loading){
+      <button
+    type="submit"
+    [disabled]="!reactiveForms.valid"
+    [class.bg-gray-300]="!reactiveForms.valid"
+    class="text-white w-full bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+  >
+     <i class="fa-solid fa-circle-notch fa-spin"></i>
+  </button>
+  }
+  @else {
+    <button
+    type="submit"
+    [disabled]="!reactiveForms.valid"
+    [class.bg-gray-300]="!reactiveForms.valid"
+    class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+  >
+    Submit
+  </button>
+  }
+  @if(Message!=""){
+    <div
+      class="flex items-center mt-2 p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
+      role="alert"
+    >
+      <span class="sr-only">Info</span>
+      <div>
+         {{Message}}
+      </div>
+    </div>
+  }
+  <div class="text-center mt-2 text-sm">New user? <a routerLink="/signup" class="underline-offset-1 hover:underline hover:text-blue-500 decoration-solid text-blue-500">Register</a></div>
+</form>
+</div>
+</div>
+
+
+
