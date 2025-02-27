@@ -18,6 +18,7 @@ import { SingleProductComponent } from './features/component/single-product/sing
 import { OrdersComponent } from './features/component/orders/orders.component';
 import { SingleOrderComponent } from './features/component/single-order/single-order.component';
 import { WishlistComponent } from './features/component/wishlist/wishlist.component';
+import { RenderMode, ServerRoute } from '@angular/ssr';
 export const routes: Routes = [
   {
     path: '',
@@ -69,7 +70,10 @@ export const routes: Routes = [
   },
   {
     path: 'checkout/:cartId',
-    loadComponent: ()=>  import("./features/component/checkout/checkout.component").then(c => c.CheckoutComponent),
+    loadComponent: () =>
+      import('./features/component/checkout/checkout.component').then(
+        (c) => c.CheckoutComponent
+      ),
     title: 'Check Out',
   },
   {
