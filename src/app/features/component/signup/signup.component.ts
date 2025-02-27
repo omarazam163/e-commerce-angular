@@ -2,6 +2,7 @@ import { Component,inject} from '@angular/core';
 import { RouterLink } from '@angular/router';
 import {ReactiveFormsModule,FormGroup, FormControl, Validators} from "@angular/forms"
 import { AuthService } from '../../../core/services/auth/register.service';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-signup',
   imports: [ReactiveFormsModule,RouterLink],
@@ -10,6 +11,7 @@ import { AuthService } from '../../../core/services/auth/register.service';
 })
 export class SignupComponent {
   _register = inject(AuthService);
+  _router = inject(Router);
   EmailAlreadyExists = false;
   isLoading: boolean = false;
   reactiveForms = new FormGroup(
@@ -56,6 +58,7 @@ export class SignupComponent {
           console.log(res);
           this.EmailAlreadyExists = false;
           this.isLoading=false;
+          this._router.navigate(['/signin']);
         },
         error: (err) => {
           this.EmailAlreadyExists=true;
