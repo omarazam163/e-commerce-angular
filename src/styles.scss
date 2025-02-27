@@ -5,3 +5,121 @@ body
 {
     background-color: #f1f2f4;
 }
+
+/* 🌟 General Toastr Styles */
+.toast-container {
+  font-family: "Poppins", sans-serif;
+  font-size: 15px;
+}
+
+/* 🎨 Common Toast Style */
+.toast {
+  border-radius: 12px !important;
+  padding: 16px 20px !important;
+  box-shadow: 0px 6px 18px rgba(0, 0, 0, 0.15) !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+  position: relative;
+  backdrop-filter: blur(8px); /* Glass effect */
+  opacity: 0;
+  transform: translateY(-20px) scale(0.95);
+  animation: fadeIn 0.4s forwards, fadeOut 0.4s 3s forwards;
+}
+
+/* ✅ Success Toast */
+.toast-success {
+  background: linear-gradient(135deg, #2ecc71, #1abc9c) !important;
+  color: white !important;
+}
+
+/* ❌ Error Toast */
+.toast-error {
+  background: linear-gradient(135deg, #e74c3c, #c0392b) !important;
+  color: white !important;
+}
+
+/* ⚠️ Warning Toast */
+.toast-warning {
+  background: linear-gradient(135deg, #f39c12, #f1c40f) !important;
+  color: black !important;
+}
+
+/* ℹ️ Info Toast */
+.toast-info {
+  background: linear-gradient(135deg, #3498db, #2980b9) !important;
+  color: white !important;
+}
+
+/* 🔘 Close Button */
+.toast-close-button {
+  color: white !important;
+  font-size: 16px !important;
+  opacity: 0.7 !important;
+  transition: opacity 0.2s ease-in-out;
+}
+
+.toast-close-button:hover {
+  opacity: 1 !important;
+}
+
+/* 🌟 Modern Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.95);
+  }
+}
+
+/* ✔️ Checkmark Animation */
+.toast-success::before {
+  content: "✔";
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%) scale(0);
+  font-size: 20px;
+  font-weight: bold;
+  color: white;
+  background: rgba(255, 255, 255, 0.2);
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-family: Arial, sans-serif;
+  box-shadow: inset 2px 2px 4px rgba(255, 255, 255, 0.2), 
+              inset -2px -2px 4px rgba(0, 0, 0, 0.1);
+  animation: checkmarkPop 0.4s ease-out 0.3s forwards;
+}
+
+/* ✔️ Checkmark Pop Animation */
+@keyframes checkmarkPop {
+  0% {
+    transform: translateY(-50%) scale(0);
+    opacity: 0;
+  }
+  70% {
+    transform: translateY(-50%) scale(1.3);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-50%) scale(1);
+  }
+}

@@ -1,127 +1,80 @@
 <nav class="bg-white z-50">
-  <div
-    class="py-4 container px-[10px] lg:px-[20px] mx-auto flex items-center justify-between"
-  >
+  <div class="py-4 z-50 container px-[10px] lg:px-[20px] mx-auto flex items-center justify-between">
     <div class="w-[130px] lg:w-[200px]">
       <img src="images/F-2.png" />
     </div>
     <div class="justify-between hidden lg:flex">
-      <a
-        class="hover:text-[#1344d8] px-[30px]"
-        routerLink="Home"
-        routerLinkActive="text-[#1344d8]"
-        >Home</a
-      >
-      <a
-        class="hover:text-[#1344d8] px-[30px]"
-        routerLink="products"
-        routerLinkActive="text-[#1344d8]"
-        >Products</a
-      >
-      <a
-        class="hover:text-[#1344d8] px-[30px]"
-        routerLink="categories"
-        routerLinkActive="text-[#1344d8]"
-        >Categories</a
-      >
-      <a
-        class="hover:text-[rgb(19,68,216)] px-[30px]"
-        routerLink="brands"
-        routerLinkActive="text-[#1344d8]"
-        >Brands</a
-      >
+      <a class="hover:text-[#1344d8] px-[30px]" routerLink="Home" routerLinkActive="text-[#1344d8]">Home</a>
+      <a class="hover:text-[#1344d8] px-[30px]" routerLink="products" routerLinkActive="text-[#1344d8]">Products</a>
+      <a class="hover:text-[#1344d8] px-[30px]" routerLink="categories" routerLinkActive="text-[#1344d8]">Categories</a>
+      <a class="hover:text-[rgb(19,68,216)] px-[30px]" routerLink="brands" routerLinkActive="text-[#1344d8]">Brands</a>
     </div>
     <div>
       <ul class="flex justify-between lg:text-[24px] items-center">
-        <li
-        [routerLink]="(islogin)?'/wishlist':'/signin'"
-        class="pr-[20px]">
-          <a class="hover:text-[#e03d3d]"
-            ><i class="fa-regular fa-heart"></i
-          ></a>
+        <li [routerLink]="(islogin)?'/wishlist':'/signin'" class="pr-[20px] relative">
+          <a class="hover:text-[#e03d3d]"><i class="fa-regular fa-heart"></i></a>
+          @if (islogin&&CountWishList>0){ 
+          <div
+            class="absolute inline-flex items-center justify-center w-5 h-5 text-xs font-bold text-white bg-red-500 border-2 border-white rounded-full top-[-5px] left-[10px] lg:top-[0px] lg:left-[15px] dark:border-gray-900">
+            {{CountWishList}}
+          </div>
+          }
         </li>
-        @if (islogin) {
-        <li class="pr-[20px]" routerLink="cart">
-          <a class="hover:text-[#1344d8]"
-            ><i class="fa-solid fa-cart-shopping"></i
-          ></a>
+        <li class="pr-[20px] relative" [routerLink]="(islogin)?'/cart':'/signin'">
+          <a class="hover:text-[#1344d8]"><i class="fa-solid fa-cart-shopping"></i></a>
+          @if (islogin&&CountCart>0){
+          <div
+            class="absolute inline-flex items-center justify-center w-5 h-5 text-xs font-bold text-white bg-blue-500 border-2 border-white rounded-full top-[-5px] left-[10px] lg:top-[0px] lg:left-[15px] dark:border-gray-900">
+            {{CountCart}}
+          </div>
+        }
         </li>
-        } @else {
-        <li class="pr-[20px]" routerLink="signin">
-          <a class="hover:text-[#1344d8]">
-            <i class="fa-solid fa-cart-shopping"></i>
-          </a>
-        </li>
-        } @if(!islogin){
+
+        @if(!islogin){
         <li class="pr-[20px]" routerLink="signup">
           <a class="hover:text-[#e03d3d]"><i class="fa-solid fa-user"></i></a>
         </li>
         } @else {
-      <li class="pr-[20px] relative">
-        <div
-          (click)="toggleUser()"
-          class="relative cursor-pointer inline-flex items-center justify-center w-10 h-10 overflow-hidden bg-blue-500 rounded-full dark:bg-gray-600"
-        >
-          <span class="font-normal text-sm text-white uppercase dark:text-gray-300">{{name.substring(0,2)}}</span>
-        </div>
-        <!-- Dropdown menu -->
-        <div
-          [class.hidden]="hideDropdown"
-          id="userDropdown"
-          class="z-10 absolute left-[-150%]  bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44 dark:bg-gray-700 dark:divide-gray-600"
-        >
-          <div class="px-4 py-3 text-sm text-gray-900 dark:text-white">
-            <div>{{name}}</div>
-            <div class="font-medium truncate">flipmart.com</div>
+        <li class="pr-[20px] relative">
+          <div (click)="toggleUser()"
+            class="relative cursor-pointer inline-flex items-center justify-center w-10 h-10 overflow-hidden bg-blue-500 rounded-full dark:bg-gray-600">
+            <span class="font-normal text-sm text-white uppercase dark:text-gray-300">{{name.substring(0,2)}}</span>
           </div>
-          <ul
-            class="py-2 text-sm text-gray-700 dark:text-gray-200"
-            aria-labelledby="avatarButton"
-          >
-            <li>
-              <a
-                routerLink="cart"
-                class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                >Cart</a
-              >
-            </li>
-          <li>
-              <a
-                href="#"
-                class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                >settings</a
-              >
-            </li>
-            <li>
-              <a
-                href="#"
-                class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                routerLink="orders"
-                >orders</a
-              >
-            </li>
-          </ul>
-          <div class="py-1">
-            <a
-              href="#"
-              (click)="logout()"
-              class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
-              >Sign out</a
-            >
+          <!-- Dropdown menu -->
+          <div [class.hidden]="hideDropdown" id="userDropdown"
+            class="z-10 absolute left-[-150%]  bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44 dark:bg-gray-700 dark:divide-gray-600">
+            <div class="px-4 py-3 text-sm text-gray-900 dark:text-white">
+              <div>{{name}}</div>
+              <div class="font-medium truncate">flipmart.com</div>
+            </div>
+            <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="avatarButton">
+              <li>
+                <a routerLink="cart"
+                  class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Cart</a>
+              </li>
+              <li>
+                <a href="#"
+                  class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">settings</a>
+              </li>
+              <li>
+                <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                  routerLink="orders">orders</a>
+              </li>
+            </ul>
+            <div class="py-1">
+              <a href="#" (click)="logout()"
+                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Sign
+                out</a>
+            </div>
           </div>
-        </div>
-      </li>
+        </li>
         }
 
         <li class="pr-[20px]">
           <!-- Mobile menu button -->
-          <button
-            data-drawer-target="default-sidebar"
-            data-drawer-toggle="default-sidebar"
-            aria-controls="default-sidebar"
-            type="button"
-            class="lg:hidden rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
-          >
+          <button data-drawer-target="default-sidebar" data-drawer-toggle="default-sidebar"
+            aria-controls="default-sidebar" type="button"
+            class="lg:hidden rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
             <i class="fa-solid fa-bars"></i>
           </button>
         </li>
@@ -131,81 +84,48 @@
 </nav>
 
 <!-- sidebar -->
-<aside
-  id="default-sidebar"
+<aside id="default-sidebar"
   class="fixed top-0 left-0 z-40 translate-x-[-100%] w-64 h-screen transition-transform lg:hidden --translate-x-full"
-  aria-label="Sidebar"
->
+  aria-label="Sidebar">
   <div class="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800">
     <ul class="space-y-2 font-medium">
       <li>
-        <a
-          routerLink="Home"
-          routerLinkActive="bg-blue-500 text-white pointer-events-none"
-          class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
-        >
-          <svg
-            routerLinkActive="text-white"
+        <a routerLink="Home" routerLinkActive="bg-blue-500 text-white pointer-events-none"
+          class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+          <svg routerLinkActive="text-white"
             class="shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
-            aria-hidden="true"
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            fill="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              fill-rule="evenodd"
+            aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+            viewBox="0 0 24 24">
+            <path fill-rule="evenodd"
               d="M11.293 3.293a1 1 0 0 1 1.414 0l6 6 2 2a1 1 0 0 1-1.414 1.414L19 12.414V19a2 2 0 0 1-2 2h-3a1 1 0 0 1-1-1v-3h-2v3a1 1 0 0 1-1 1H7a2 2 0 0 1-2-2v-6.586l-.293.293a1 1 0 0 1-1.414-1.414l2-2 6-6Z"
-              clip-rule="evenodd"
-            />
+              clip-rule="evenodd" />
           </svg>
 
           <span class="flex-1 ms-3 whitespace-nowrap">Home</span>
         </a>
       </li>
       <li>
-        <a
-          routerLink="products"
-          routerLinkActive="bg-blue-500 text-white pointer-events-none"
-          class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
-        >
-          <svg
-            routerLinkActive="text-white"
+        <a routerLink="products" routerLinkActive="bg-blue-500 text-white pointer-events-none"
+          class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+          <svg routerLinkActive="text-white"
             class="shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
-            aria-hidden="true"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="currentColor"
-            viewBox="0 0 18 20"
-          >
+            aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 20">
             <path
-              d="M17 5.923A1 1 0 0 0 16 5h-3V4a4 4 0 1 0-8 0v1H2a1 1 0 0 0-1 .923L.086 17.846A2 2 0 0 0 2.08 20h13.84a2 2 0 0 0 1.994-2.153L17 5.923ZM7 9a1 1 0 0 1-2 0V7h2v2Zm0-5a2 2 0 1 1 4 0v1H7V4Zm6 5a1 1 0 1 1-2 0V7h2v2Z"
-            />
+              d="M17 5.923A1 1 0 0 0 16 5h-3V4a4 4 0 1 0-8 0v1H2a1 1 0 0 0-1 .923L.086 17.846A2 2 0 0 0 2.08 20h13.84a2 2 0 0 0 1.994-2.153L17 5.923ZM7 9a1 1 0 0 1-2 0V7h2v2Zm0-5a2 2 0 1 1 4 0v1H7V4Zm6 5a1 1 0 1 1-2 0V7h2v2Z" />
           </svg>
           <span class="flex-1 ms-3 whitespace-nowrap">Products</span>
         </a>
       </li>
 
       <li>
-        <a
-          href="#"
-          routerLink="categories"
-          routerLinkActive="bg-blue-500 text-white pointer-events-none"
-          class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
-        >
-          <svg
-            routerLinkActive="text-white"
+        <a href="#" routerLink="categories" routerLinkActive="bg-blue-500 text-white pointer-events-none"
+          class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+          <svg routerLinkActive="text-white"
             class="shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            id="category"
-          >
-            <path
-              fill="currentColor"
+            width="24" height="24" viewBox="0 0 24 24" id="category">
+            <path fill="currentColor"
               d="M5.9199,11.4697 C7.3299,11.4697 8.4599,12.6107 8.4599,14.0307 L8.4599,14.0307 L8.4599,17.4397 C8.4599,18.8497 7.3299,19.9997 5.9199,19.9997 L5.9199,19.9997 L2.5399,19.9997 C1.1399,19.9997 -0.0001,18.8497 -0.0001,17.4397 L-0.0001,17.4397 L-0.0001,14.0307 C-0.0001,12.6107 1.1399,11.4697 2.5399,11.4697 L2.5399,11.4697 Z M17.46,11.4697 C18.86,11.4697 20,12.6107 20,14.0307 L20,14.0307 L20,17.4397 C20,18.8497 18.86,19.9997 17.46,19.9997 L17.46,19.9997 L14.08,19.9997 C12.67,19.9997 11.54,18.8497 11.54,17.4397 L11.54,17.4397 L11.54,14.0307 C11.54,12.6107 12.67,11.4697 14.08,11.4697 L14.08,11.4697 Z M5.9199,-9.32587341e-14 C7.3299,-9.32587341e-14 8.4599,1.15 8.4599,2.561 L8.4599,2.561 L8.4599,5.97 C8.4599,7.39 7.3299,8.53 5.9199,8.53 L5.9199,8.53 L2.5399,8.53 C1.1399,8.53 -0.0001,7.39 -0.0001,5.97 L-0.0001,5.97 L-0.0001,2.561 C-0.0001,1.15 1.1399,-9.32587341e-14 2.5399,-9.32587341e-14 L2.5399,-9.32587341e-14 Z M17.46,-9.32587341e-14 C18.86,-9.32587341e-14 20,1.15 20,2.561 L20,2.561 L20,5.97 C20,7.39 18.86,8.53 17.46,8.53 L17.46,8.53 L14.08,8.53 C12.67,8.53 11.54,7.39 11.54,5.97 L11.54,5.97 L11.54,2.561 C11.54,1.15 12.67,-9.32587341e-14 14.08,-9.32587341e-14 L14.08,-9.32587341e-14 Z"
-              transform="translate(2 2)"
-            ></path>
+              transform="translate(2 2)"></path>
           </svg>
 
           <span class="flex-1 ms-3 whitespace-nowrap">Categories</span>
@@ -213,22 +133,12 @@
       </li>
 
       <li>
-        <a
-          href="#"
-          routerLink="brands"
-          routerLinkActive="bg-blue-500 text-white pointer-events-none"
-          class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
-        >
-          <svg
-            routerLinkActive="text-white"
-            xmlns="http://www.w3.org/2000/svg"
+        <a href="#" routerLink="brands" routerLinkActive="bg-blue-500 text-white pointer-events-none"
+          class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+          <svg routerLinkActive="text-white" xmlns="http://www.w3.org/2000/svg"
             class="w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
-            viewBox="0 0 24 24"
-            fill="currentColor"
-          >
-            <path
-              d="M4 4H20V8H4V4ZM4 10V20H20V10H4ZM2 2V10H22V2H2ZM7 12H10V17H7V12ZM14 12H17V17H14V12Z"
-            />
+            viewBox="0 0 24 24" fill="currentColor">
+            <path d="M4 4H20V8H4V4ZM4 10V20H20V10H4ZM2 2V10H22V2H2ZM7 12H10V17H7V12ZM14 12H17V17H14V12Z" />
           </svg>
           <span class="flex-1 ms-3 whitespace-nowrap">Brands</span>
         </a>

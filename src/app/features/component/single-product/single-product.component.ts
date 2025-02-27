@@ -1,9 +1,9 @@
-import { Component,ElementRef,inject, ViewChild } from '@angular/core';
+import { Component, ElementRef, inject, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ProductService } from '../../../core/services/product/product.service';
 import { product } from '../../../shared/interfaces/product';
 import { LoaderComponent } from '../../../shared/component/loader/loader.component';
-import { RatingComponent } from "../rating/rating.component";
+import { RatingComponent } from '../rating/rating.component';
 import { AuthService } from '../../../core/services/auth/register.service';
 import { Router } from '@angular/router';
 @Component({
@@ -32,21 +32,22 @@ export class SingleProductComponent {
         console.log(err);
       },
     });
-     this._auth.isLogin.subscribe((res) => {
-       this.isLogin = res;
-       this._ProductService
-         .getAllwatchList(localStorage.getItem('token') || '')
-         .subscribe({
-           next: (res: any) => {
-             res.data.forEach((element: any) => {
-               this.WatchList.add(element._id);
-             });
-           },
-           error: (err: any) => {
-             this.WatchList.clear();
-           },
-         });
-     });
+    this._auth.isLogin.subscribe((res) => {
+      this.isLogin = res;
+      this._ProductService;
+      if (this.isLogin) {
+        this._ProductService.getAllWishList().subscribe({
+          next: (res: any) => {
+            res.data.forEach((element: any) => {
+              this.WatchList.add(element._id);
+            });
+          },
+          error: (err: any) => {
+            this.WatchList.clear();
+          },
+        });
+      }
+    });
   }
 
   changeImage(num: number) {
@@ -55,16 +56,14 @@ export class SingleProductComponent {
   }
 
   addToCart(id: string) {
-    this._ProductService
-      .addTocart(id, localStorage.getItem('token') || '')
-      .subscribe({
-        next: (res: any) => {
-          console.log('success');
-        },
-        error: (err: any) => {
-          this._router.navigate(['/signin']);
-        },
-      });
+    this._ProductService.addTocart(id).subscribe({
+      next: (res: any) => {
+        this._ProductService.CartItemsCount.next(res.numOfCartItems);
+      },
+      error: (err: any) => {
+        this._router.navigate(['/signin']);
+      },
+    });
   }
   toSignIn() {
     this._router.navigate(['/signin']);
@@ -72,29 +71,23 @@ export class SingleProductComponent {
 
   addToWatchList(id: string) {
     this.WatchList.add(id);
-    this._ProductService
-      .addToWatchList(id, localStorage.getItem('token') || '')
-      .subscribe({
-        next: (res: any) => {
-          console.log('success');
-        },
-        error: (err: any) => {
-          this._router.navigate(['/signin']);
-        },
-      });
+    this._ProductService.addToWishList(id).subscribe({
+      next: (res: any) => {},
+      error: (err: any) => {
+        this._router.navigate(['/signin']);
+      },
+    });
   }
 
   removeFromWatchList(id: string) {
     this.WatchList.delete(id);
-    this._ProductService
-      .removeFromWatchList(id, localStorage.getItem('token') || '')
-      .subscribe({
-        next: (res) => {
-          console.log('success');
-        },
-        error: (err: any) => {
-          this._router.navigate(['/signin']);
-        },
-      });
+    this._ProductService.removeFromWishList(id).subscribe({
+      next: (res) => {
+        console.log('success');
+      },
+      error: (err: any) => {
+        this._router.navigate(['/signin']);
+      },
+    });
   }
 }

@@ -1,10 +1,12 @@
-import { Component, Inject, PLATFORM_ID, OnInit } from '@angular/core';
+import { Component, Inject, PLATFORM_ID, OnInit, inject } from '@angular/core';
 import { ProductService } from '../../../core/services/product/product.service';
 import { Router } from '@angular/router';
 import { cartProduct } from '../../../shared/interfaces/cart-product';
 import { isPlatformBrowser } from '@angular/common';
 import { LoaderComponent } from '../../../shared/component/loader/loader.component';
 import { RouterLink } from '@angular/router';
+import { AuthService } from '../../../core/services/auth/register.service';
+import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-cart',
   imports:[LoaderComponent,RouterLink],
@@ -14,22 +16,23 @@ import { RouterLink } from '@angular/router';
 export class CartComponent implements OnInit {
   cart!: any;
   products: cartProduct[] = [];
+  _toastr = inject(ToastrService);
 
   constructor(
     private _ProductService: ProductService,
     private _router: Router,
-    @Inject(PLATFORM_ID) private platformId: Object // ✅ Fixed: Explicitly defined type
+    @Inject(PLATFORM_ID) private platformId: Object
   ) {}
+  _auth = inject(AuthService);
 
   ngOnInit() {
     if (isPlatformBrowser(this.platformId)) {
       this._ProductService
-        .getCart(localStorage.getItem('token') || '')
+        .getCart()
         .subscribe({
           next: (res: any) => {
             this.cart = res;
             this.products = res.data.products;
-            console.log(this.products);
           },
           error: (err: any) => {},
         });
@@ -51,8 +54,11 @@ export class CartComponent implements OnInit {
       (acc, el) => acc + el.price * el.count,
       0
     );
-    this._ProductService.updateCart(id, count).subscribe({
-      next: (res: any) => {},
+    this._ProductService.updateCart(id, count, this.products.length).subscribe({
+      next: (res: any) => {
+        this._ProductService.CartItemsCount.next(res.numOfCartItems);
+        this._toastr.success("success","Cart Updated");
+      },
       error: (err: any) => {
         console.log(err);
       },
@@ -67,9 +73,11 @@ export class CartComponent implements OnInit {
           0
         );
     this._ProductService.removeACartItem(id).subscribe({
-      next: (res: any) => {},
+      next: (res: any) => {
+        this._ProductService.CartItemsCount.next(res.numOfCartItems);
+        this._toastr.success('success', 'Cart Updated');
+      },
       error: (err: any) => {
-        console.log(err);
       },
     });
   }

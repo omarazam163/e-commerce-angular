@@ -1,22 +1,31 @@
+import { Category } from './../../../shared/interfaces/category';
 import { product } from './../../../shared/interfaces/product';
-import { Component, inject, viewChild, ViewChild } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { ProductService } from '../../../core/services/product/product.service';
 import { LoaderComponent } from '../../../shared/component/loader/loader.component';
-import { Category } from '../../../shared/interfaces/category';
 import { SliderCatComponent } from '../slider-cat/slider-cat.component';
-import { RouterLink } from '@angular/router';
-import { RatingComponent } from '../rating/rating.component';
 import { PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { AuthService } from '../../../core/services/auth/register.service';
 import { Router } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+import { SearchPipePipe } from '../../../core/pipes/search-pipe.pipe';
+import { map } from 'rxjs';
+import { CardComponent } from '../card/card.component';
 @Component({
   selector: 'app-home',
-  imports: [LoaderComponent, SliderCatComponent, RouterLink, RatingComponent],
+  imports: [
+    LoaderComponent,
+    SliderCatComponent,
+    FormsModule,
+    SearchPipePipe,
+    CardComponent
+  ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
 })
 export class HomeComponent {
+  searchWord: string = '';
   _ProductService = inject(ProductService);
   _auth = inject(AuthService);
   products: product[] = [];
@@ -25,7 +34,7 @@ export class HomeComponent {
   islogin: boolean = false;
   _router = inject(Router);
   WatchList = new Set();
-  WatchlistLoading: boolean = false;
+  CategoryFilter = signal<string>('all');
   ngOnInit(): void {
     if (isPlatformBrowser(this._PLATFORM_ID)) {
       this._ProductService.getAllproducts().subscribe({
@@ -33,73 +42,58 @@ export class HomeComponent {
           this.products = res.data;
         },
       });
-      this._ProductService.getAllCategories().subscribe({
-        next: (res: any) => {
-          this.Categories = res.data;
-        },
-      });
-    
 
-    this._auth.isLogin.subscribe((res) => {
-      this.islogin = res;
       this._ProductService
-        .getAllwatchList(localStorage.getItem('token') || '')
+        .getAllCategories()
+        .pipe(
+          map((data: any) => {
+            let all: Category = {
+              _id: 'all',
+              name: 'all',
+              slug: 'all',
+              image: 'images/all.png',
+            };
+            data.data.unshift(all);
+            return data;
+          })
+        )
         .subscribe({
           next: (res: any) => {
-            res.data.forEach((element: any) => {
-              this.WatchList.add(element._id);
-            });
-          },
-          error: (err: any) => {
-            this.WatchList.clear();
+            this.Categories = res.data;
           },
         });
-    });
-  }
-  }
-  addToCart(id: string) {
-    this._ProductService
-      .addTocart(id, localStorage.getItem('token') || '')
-      .subscribe({
-        next: (res: any) => {
-          console.log('success');
-        },
-        error: (err: any) => {
-          this._router.navigate(['/signin']);
-        },
+
+      this._auth.isLogin.subscribe((res) => {
+        this.islogin = res;
+        if (res) {
+          this._ProductService.getAllWishList().subscribe({
+            next: (res: any) => {
+              res.data.forEach((element: any) => {
+                this.WatchList.add(element._id);
+              });
+            },
+            error: (err: any) => {
+              this.WatchList.clear();
+            },
+          });
+        }
       });
+    }
   }
-  toSignIn() {
-    this._router.navigate(['/signin']);
+  
+  recieveCat(category: string) {
+    this.CategoryFilter.set(category);
   }
 
-  addToWatchList(id: string) {
-    this.WatchList.add(id);
-    this._ProductService
-      .addToWatchList(id, localStorage.getItem('token') || '')
-      .subscribe({
-        next: (res: any) => {
-          console.log('success');
-        },
-        error: (err: any) => {
-          this._router.navigate(['/signin']);
-          this.WatchlistLoading = false;
-        },
-      });
-  }
-
-  removeFromWatchList(id:string)
+  WishListEcentHandler(event:string)
   {
-    this.WatchList.delete(id);
-    this._ProductService.removeFromWatchList(
-      id,
-      localStorage.getItem('token') || ''
-    ).subscribe({next:(res)=>{
-      console.log('success');
-    },
-  error:(err:any)=>{
-    this._router.navigate(['/signin']);
-  }
-  })
+    if(this.WatchList.has(event))
+    {
+      this.WatchList.delete(event)
+    }
+    else
+    {
+      this.WatchList.add(event);
+    }
   }
 }

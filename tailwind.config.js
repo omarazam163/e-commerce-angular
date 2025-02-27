@@ -6,6 +6,7 @@ module.exports = {
       backgroundImage: {
         signinimgMobile: "url('/images/shopping-cart-with-bag-mobile.jpg')",
         signinimgDesktop: "url('/images/shopping-bag-cart.jpg')",
+        AllCat: "url('/images/all.png')",
       },
       
     },

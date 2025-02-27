@@ -1,24 +1,19 @@
-import { product } from './../../../shared/interfaces/product';
-import { sign } from 'crypto';
 import { Injectable, inject, PLATFORM_ID } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Register } from '../../../shared/interfaces/register';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { isPlatformBrowser } from '@angular/common';
-import { ProductService } from '../product/product.service';
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
   _http = inject(HttpClient);
-  _ProductService = inject(ProductService);
   isLogin = new BehaviorSubject<boolean>(false);
   platformId = inject(PLATFORM_ID);
   name = new BehaviorSubject<string>('');
   emailFromSignIn: string = '';
   emailToResetPassword: string = '';
-  wishLIstItems =new  BehaviorSubject<product[]>([]);
-  Cart = new  BehaviorSubject<any>({});
+
 
   constructor() {
     if (isPlatformBrowser(this.platformId)) {
@@ -27,7 +22,6 @@ export class AuthService {
           next: (res) => {
             this.name.next(res.decoded.name);
             this.isLogin.next(true);
-            this._ProductService;
           },
           error: (err) => {
             this.isLogin.next(false);
@@ -50,29 +44,8 @@ export class AuthService {
     );
   }
 
-  getWishList() {
-    this._ProductService
-      .getAllwatchList(localStorage.getItem('token') || '')
-      .subscribe({
-        next: (res: any) => {
-          this.wishLIstItems.next(res.data);
-        },
-        error: (err: any) => {
-          console.log(err);
-        },
-      });
-  }
 
-  getCart() {
-    this._ProductService.getCart(localStorage.getItem('token') || '').subscribe({
-      next: (res: any) => {
-        this.Cart.next(res.data);
-      },
-      error: (err: any) => {
-        console.log(err);
-      },
-    });
-  }
+
 
   register(data: Register): Observable<any> {
     return this._http.post(

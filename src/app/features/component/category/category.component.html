@@ -1,1 +1,14 @@
-<p>category works!</p>
+<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-5 px-5">
+    @for (item of categories(); track $index) {
+    <div class="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition hover:scale-[102%]">
+        <img [src]="item.image" alt="Technology" class="w-full h-32  rounded-md mb-2 object-cover">
+        <h3 class="text-lg font-semibold text-center">{{item.name}}</h3>
+    </div>
+    }
+    @empty {
+    <div
+        class="fixed top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] flex justify-center items-center h-40 w-full">
+        <app-loader></app-loader>
+    </div>
+    }
+</div>

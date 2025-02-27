@@ -4,7 +4,6 @@ import { HomeComponent } from './features/component/home/home.component';
 import { CartComponent } from './features/component/cart/cart.component';
 import { BrandsComponent } from './features/component/brands/brands.component';
 import { ProductsComponent } from './features/component/products/products.component';
-import { sign } from 'crypto';
 import { SignupComponent } from './features/component/signup/signup.component';
 import { SigninComponent } from './features/component/signin/signin.component';
 import { CategoryComponent } from './features/component/category/category.component';
@@ -15,10 +14,9 @@ import { ResetPasswordComponent } from './features/component/reset-password/rese
 import { VerifyResetPasswordComponent } from './features/component/verify-reset-password/verify-reset-password.component';
 import { forgotpassGuardGuard } from './core/guards/auth/forgotpass-guard.guard';
 import { SingleProductComponent } from './features/component/single-product/single-product.component';
-import { CheckoutComponent } from './features/component/checkout/checkout.component';
+// import { CheckoutComponent } from './features/component/checkout/checkout.component';
 import { OrdersComponent } from './features/component/orders/orders.component';
 import { SingleOrderComponent } from './features/component/single-order/single-order.component';
-import { single } from 'rxjs';
 import { WishlistComponent } from './features/component/wishlist/wishlist.component';
 export const routes: Routes = [
   {
@@ -71,7 +69,7 @@ export const routes: Routes = [
   },
   {
     path: 'checkout/:cartId',
-    component: CheckoutComponent,
+    loadComponent: ()=>  import("./features/component/checkout/checkout.component").then(c => c.CheckoutComponent),
     title: 'Check Out',
   },
   {

@@ -3,20 +3,25 @@ import { ProductService } from './../../../core/services/product/product.service
 import { Component, inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { LoaderComponent } from '../../../shared/component/loader/loader.component';
+import { AuthService } from '../../../core/services/auth/register.service';
+import { RouterLink } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-wishlist',
-  imports: [LoaderComponent],
+  imports: [LoaderComponent,RouterLink],
   templateUrl: './wishlist.component.html',
   styleUrl: './wishlist.component.scss',
 })
 export class WishlistComponent {
   _ProductService = inject(ProductService);
   _platformId = inject(PLATFORM_ID);
+  _auth = inject(AuthService);
   products: product[] = [];
+  _toaster = inject(ToastrService);
   ngOnInit(): void {
     if (isPlatformBrowser(this._platformId)) {
       this._ProductService
-        .getAllwatchList(localStorage.getItem('token') || '')
+        .getAllWishList()
         .subscribe({
           next: (res: any) => {
             this.products = res.data;
@@ -30,10 +35,10 @@ export class WishlistComponent {
 
   addToCart(id: string) {
     this._ProductService
-      .addTocart(id, localStorage.getItem('token') || '')
+      .addTocart(id)
       .subscribe({
         next: (res: any) => {
-          console.log('success');
+          this._toaster.success('success',"added to cart");
         },
         error: (err: any) => {
           console.log(err);
@@ -44,7 +49,7 @@ export class WishlistComponent {
   removeFromWatchList(id: string) {
     this.products = this.products.filter((el) => el._id !== id);
     this._ProductService
-      .removeFromWatchList(id, localStorage.getItem('token') || '')
+      .removeFromWishList(id)
       .subscribe({
         next: (res: any) => {
           console.log('success');

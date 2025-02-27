@@ -3,4 +3,5 @@ export interface brand {
   name: string;
   slug: string;
   category: string;
+  image?: string;
 }

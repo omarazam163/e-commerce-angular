@@ -1,11 +1,50 @@
-import { Injectable,inject } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { AuthService } from '../auth/register.service';
+import { BehaviorSubject } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })
 export class ProductService {
   _httpClient = inject(HttpClient);
-  constructor() {}
+  _authService = inject(AuthService);
+  wishLIstItemsNumber = new BehaviorSubject<number>(0);
+  CartItemsCount = new BehaviorSubject<number>(0);
+  constructor() {
+    this._authService.isLogin.subscribe({
+      next: (res) => {
+        if (res) {
+          this.getWishListNumber();
+          this.getCartCount();
+        }
+      },
+      error: (err) => {
+        console.log(err);
+      },
+    });
+  }
+
+  getWishListNumber() {
+    this.getAllWishList().subscribe({
+      next: (res: any) => {
+        this.wishLIstItemsNumber.next(res.data.length);
+      },
+      error: (err: any) => {
+        console.log(err);
+      },
+    });
+  }
+
+  getCartCount() {
+    this.getCart().subscribe({
+      next: (res: any) => {
+        this.CartItemsCount.next(res.numOfCartItems);
+      },
+      error: (err: any) => {
+        console.log(err);
+      },
+    });
+  }
   getAllproducts() {
     return this._httpClient.get(
       'https://ecommerce.routemisr.com/api/v1/products'
@@ -24,114 +63,75 @@ export class ProductService {
     );
   }
 
-  addTocart(id: string, token: string) {
+  addTocart(id: string) {
     return this._httpClient.post(
       'https://ecommerce.routemisr.com/api/v1/cart',
       {
         productId: id,
-      },
-      {
-        headers: {
-          token: token,
-        },
       }
     );
   }
 
-  addToWatchList(id: string, token: string) {
+  addToWishList(id: string) {
+    this.wishLIstItemsNumber.next(this.wishLIstItemsNumber.value + 1);
     return this._httpClient.post(
       `https://ecommerce.routemisr.com/api/v1/wishlist`,
       {
         productId: id,
-      },
-      {
-        headers: {
-          token: token,
-        },
       }
     );
   }
 
-  getAllwatchList(token: string) {
+  getAllWishList() {
     return this._httpClient.get(
-      'https://ecommerce.routemisr.com/api/v1/wishlist',
-      {
-        headers: {
-          token: token,
-        },
-      }
+      'https://ecommerce.routemisr.com/api/v1/wishlist'
     );
   }
 
-  removeFromWatchList(id: string, token: string) {
+  removeFromWishList(id: string) {
+    this.wishLIstItemsNumber.next(this.wishLIstItemsNumber.value - 1);
     return this._httpClient.delete(
-      `https://ecommerce.routemisr.com/api/v1/wishlist/${id}`,
-      {
-        headers: {
-          token: token,
-        },
-      }
+      `https://ecommerce.routemisr.com/api/v1/wishlist/${id}`
     );
   }
 
-  getCart(token: string) {
-    return this._httpClient.get('https://ecommerce.routemisr.com/api/v1/cart', {
-      headers: {
-        token: token,
-      },
-    });
+  getCart() {
+    return this._httpClient.get('https://ecommerce.routemisr.com/api/v1/cart');
   }
 
-  updateCart(id: string, count: number) {
-    const token = localStorage.getItem('token') || '';
+  updateCart(id: string, count: number, total: number) {
     return this._httpClient.put(
       `https://ecommerce.routemisr.com/api/v1/cart/${id}`,
       {
         count: count,
-      },
-      {
-        headers: {
-          token: token,
-        },
       }
     );
   }
 
   removeACartItem(id: string) {
-    const token = localStorage.getItem('token') || '';
     return this._httpClient.delete(
-      `https://ecommerce.routemisr.com/api/v1/cart/${id}`,
-      {
-        headers: {
-          token: token,
-        },
-      }
+      `https://ecommerce.routemisr.com/api/v1/cart/${id}`
     );
   }
 
   createAnOnlineSession(data: any, cartId: string) {
-    const token: string = localStorage.getItem('token') || '';
     return this._httpClient.post(
       `https://ecommerce.routemisr.com/api/v1/orders/checkout-session/${cartId}?url=http://localhost:4200/orders`,
-      data,
-      {
-        headers: {
-          token: token,
-        },
-      }
+      data
     );
   }
 
   createCashOrder(data: any, cartId: string) {
-    const token: string = localStorage.getItem('token') || '';
+    this.CartItemsCount.next(0);
     return this._httpClient.post(
       `https://ecommerce.routemisr.com/api/v1/orders/${cartId}`,
-      data,
-      {
-        headers: {
-          token: token,
-        },
-      }
+      data
+    );
+  }
+
+  getAllBrands() {
+    return this._httpClient.get(
+      'https://ecommerce.routemisr.com/api/v1/brands'
     );
   }
 }

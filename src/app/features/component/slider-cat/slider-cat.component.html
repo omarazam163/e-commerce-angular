@@ -1,20 +1,23 @@
 @if (Categories!=[]) {
-  <div class="bg-white mt-4 rounded-lg">
-    <owl-carousel-o [options]="customOptions">
-    @for (item of Categories; track $index) {
-     <ng-template carouselSlide [id]="item._id">
-        <div class="p-1 flex flex-col justify-center items-center hover:scale-[104%] cursor-pointer py-4">
-            <div class="w-[150px] h-[150px] rounded-full overflow-hidden flex items-center justify-center">
-                <img [src]="item.image" class="object-fill">
-            </div>
-            <div class="text-center">{{item.name}}</div>
+<div class="bg-white mt-4 rounded-lg">
+  <owl-carousel-o [options]="customOptions" [id]="'1212324356666666667'">
+    @for (item of Categories;track (item._id + $index)) {
+    <ng-template carouselSlide [id]="'slide-' + item._id + '-' + $index">
+      <div (click)="sendName(item.name)" class="p-1 flex flex-col justify-center items-center hover:scale-[104%] cursor-pointer py-4">
+        <div 
+        [class.border-4]="item.name === activeName()"
+[class.border-blue-500]="item.name === activeName()"
+         class=" w-[150px] h-[150px] rounded-full overflow-hidden flex items-center justify-center">
+          <img [src]="item.image" class="object-fill">
         </div>
-      </ng-template>
+        <div class="text-center">{{item.name}}
+        </div>
+      </div>
+    </ng-template>
     }
     @empty {
-      <app-loader></app-loader>
+    <app-loader></app-loader>
     }
-</owl-carousel-o>
-  </div>
+  </owl-carousel-o>
+</div>
 }
-

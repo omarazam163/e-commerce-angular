@@ -5,6 +5,7 @@ import { isPlatformBrowser } from '@angular/common';
 import { LoaderComponent } from '../../../shared/component/loader/loader.component';
 import { ReactiveFormsModule,FormGroup,FormControl,Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { AuthService } from '../../../core/services/auth/register.service';
 @Component({
   selector: 'app-checkout',
   imports: [LoaderComponent, ReactiveFormsModule],
@@ -18,6 +19,7 @@ export class CheckoutComponent {
   _PLATFORM_ID = inject(PLATFORM_ID);
   totalPrice: number = 0;
   _Router = inject(Router);
+  _auth = inject(AuthService);
   egyptGovernorates: string[] = [
     'Cairo',
     'Alexandria',
@@ -60,7 +62,7 @@ export class CheckoutComponent {
   ngOnInit(): void {
     if (isPlatformBrowser(this._PLATFORM_ID)) {
       this._ProductService
-        .getCart(localStorage.getItem('token') || '')
+        .getCart()
         .subscribe((res: any) => {
           this.totalPrice = res.data.totalCartPrice;
         });

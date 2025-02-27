@@ -12,15 +12,18 @@
             @for (item of products; track $index) {
             <tr class="border-b py-2">
                 <td class="col-span-1 w-auto p-2 text-center flex items-center gap-4 pl-10 flex-wrap">
-                    <img [src]="item.imageCover" alt="Product 1" class="w-20 h-25 rounded-lg" />
-                    <p class="text-sm text-start">
+                    <a [routerLink]="['/single',item._id]">
+                        <img [src]="item.imageCover" alt="Product 1" class="w-20 h-25 rounded-lg" />
+                    </a>
+                    <a 
+                    [routerLink]="['/single',item._id]"
+                    class="text-sm text-start">
                         Woman Bordeaux Long Sleeve Blouse BORDEAUX
-                    </p>
+                    </a>
                 </td>
                 <td class="p-2 text-center">{{item.price}}LE</td>
                 <td class="p-2 text-center">
-                    <button type="button"
-                        (click)="addToCart(item.id)"
+                    <button type="button" (click)="addToCart(item.id)"
                         class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Add</button>
                 </td>
                 <td class="p-2 text-center">
@@ -35,11 +38,11 @@
             </tr>
             }
             @empty {
-                <tr>
-                    <td colspan="4" class="p-2 text-center">
-                        <app-loader></app-loader>
-                    </td>
-                </tr>
+            <tr>
+                <td colspan="4" class="p-2 text-center">
+                    <app-loader></app-loader>
+                </td>
+            </tr>
             }
         </tbody>
     </table>

@@ -5,6 +5,7 @@ import { initFlowbite } from 'flowbite';
 import { isPlatformBrowser } from '@angular/common';
 import { FlowbiteService } from './core/services/flowbite.service';
 
+
 @Component({
   selector: 'app-root',
   imports: [RouterOutlet, NavbarComponent],
@@ -20,6 +21,6 @@ export class AppComponent {
       if (isPlatformBrowser(this._platformId)) {
         initFlowbite();
       }
-    })
+    });
   }
 }
