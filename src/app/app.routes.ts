@@ -10,15 +10,12 @@ import { CategoryComponent } from './features/component/category/category.compon
 import { authGuard } from './core/guards/auth/auth.guard';
 import { loginguardGuard } from './core/guards/auth/loginguard.guard';
 import { ForgotpasswordComponent } from './features/component/forgotpassword/forgotpassword.component';
-import { ResetPasswordComponent } from './features/component/reset-password/reset-password.component';
 import { VerifyResetPasswordComponent } from './features/component/verify-reset-password/verify-reset-password.component';
 import { forgotpassGuardGuard } from './core/guards/auth/forgotpass-guard.guard';
 import { SingleProductComponent } from './features/component/single-product/single-product.component';
-// import { CheckoutComponent } from './features/component/checkout/checkout.component';
 import { OrdersComponent } from './features/component/orders/orders.component';
 import { SingleOrderComponent } from './features/component/single-order/single-order.component';
 import { WishlistComponent } from './features/component/wishlist/wishlist.component';
-import { RenderMode, ServerRoute } from '@angular/ssr';
 export const routes: Routes = [
   {
     path: '',
@@ -97,7 +94,10 @@ export const routes: Routes = [
   {
     path: 'reset-password',
     title: 'reset password',
-    component: ResetPasswordComponent,
+    loadComponent: () =>
+      import('./features/component/reset-password/reset-password.component').then(
+        (c) => c.ResetPasswordComponent
+      ),
     children: [
       {
         path: '',
@@ -127,3 +127,5 @@ export const routes: Routes = [
     pathMatch: 'full',
   },
 ];
+
+export const prerender = false;
