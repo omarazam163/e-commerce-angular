@@ -54,7 +54,7 @@ export const routes: Routes = [
   {
     path: 'single/:id',
     component: SingleProductComponent,
-    title: 'product',
+    title: 'product'
   },
   {
     path: 'signup',
