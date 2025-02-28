@@ -39,6 +39,7 @@ export class WishlistComponent {
       .subscribe({
         next: (res: any) => {
           this._toaster.success('success',"added to cart");
+          this._ProductService.CartItemsCount.next(res.numOfCartItems+1);
         },
         error: (err: any) => {
           console.log(err);
