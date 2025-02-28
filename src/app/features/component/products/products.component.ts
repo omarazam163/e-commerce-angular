@@ -23,15 +23,15 @@ import { isPlatformBrowser } from '@angular/common';
   templateUrl: './products.component.html',
   styleUrl: './products.component.scss',
 })
-export class ProductsComponent {
+ export class ProductsComponent {
   //options for the ngx slider
   minValue: number = 50;
   maxValue: number = 50000;
-  options: Options = {
+  readonly options: Options = {
     floor: 0,
     ceil: 50000,
-    step: 100,
-  };
+    step: 1500,
+    };
 
   // services
   _auth = inject(AuthService);
@@ -49,6 +49,9 @@ export class ProductsComponent {
   SelectedCat = signal<string>('all');
   searchWord = signal<string>('');
   selectedBrand = signal<string>('all');
+
+  //accordion
+  accordion = signal<boolean>(false);
   ngOnInit() {
     this._auth.isLogin.subscribe((res) => {
       this.islogin.set(res);
