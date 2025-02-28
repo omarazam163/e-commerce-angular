@@ -6,6 +6,7 @@ import { LoaderComponent } from '../../../shared/component/loader/loader.compone
 import { RatingComponent } from '../rating/rating.component';
 import { AuthService } from '../../../core/services/auth/register.service';
 import { Router } from '@angular/router';
+import {ToastrService} from "ngx-toastr";
 @Component({
   selector: 'app-single-product',
   imports: [LoaderComponent, RatingComponent],
@@ -19,6 +20,7 @@ export class SingleProductComponent {
   _authService = inject(AuthService);
   _router = inject(Router);
   _auth = inject(AuthService);
+  _toastr = inject(ToastrService);
   isLogin: boolean = false;
   product!: product;
   WatchList = new Set();
@@ -51,13 +53,13 @@ export class SingleProductComponent {
   }
 
   changeImage(num: number) {
-    console.log('here');
     this.mainImage.nativeElement.src = this.product.images[num];
   }
 
   addToCart(id: string) {
     this._ProductService.addTocart(id).subscribe({
       next: (res: any) => {
+        this._toastr.success('success', 'Added to cart');
         this._ProductService.CartItemsCount.next(res.numOfCartItems);
       },
       error: (err: any) => {
@@ -83,7 +85,7 @@ export class SingleProductComponent {
     this.WatchList.delete(id);
     this._ProductService.removeFromWishList(id).subscribe({
       next: (res) => {
-        console.log('success');
+
       },
       error: (err: any) => {
         this._router.navigate(['/signin']);
