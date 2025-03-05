@@ -1,7 +1,8 @@
 <div
     class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-5 p-8 bg-gradient-to-br from-gray-50 to-blue-50">
     @for (item of brands(); track $index) {
-    <div class="group relative flex items-center justify-center h-40 rounded-2xl overflow-hidden 
+    <div routerLink="/products" [queryParams]="{brand: item.name}"
+    class="group relative flex items-center justify-center h-40 rounded-2xl overflow-hidden 
                backdrop-blur-lg bg-white/30 hover:bg-white/50 shadow-[0_8px_32px_rgba(0,0,0,0.05)]
                transition-all duration-500 hover:shadow-xl hover:-translate-y-2 transform-gpu
                border border-white/20 hover:border-white/40

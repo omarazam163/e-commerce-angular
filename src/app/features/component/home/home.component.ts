@@ -12,6 +12,7 @@ import { FormsModule } from '@angular/forms';
 import { SearchPipePipe } from '../../../core/pipes/search-pipe.pipe';
 import { map } from 'rxjs';
 import { CardComponent } from '../card/card.component';
+import { RouterLink } from '@angular/router';
 @Component({
   selector: 'app-home',
   imports: [
@@ -19,7 +20,8 @@ import { CardComponent } from '../card/card.component';
     SliderCatComponent,
     FormsModule,
     SearchPipePipe,
-    CardComponent
+    CardComponent,
+    RouterLink,
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
@@ -80,19 +82,15 @@ export class HomeComponent {
       });
     }
   }
-  
+
   recieveCat(category: string) {
     this.CategoryFilter.set(category);
   }
 
-  WishListEcentHandler(event:string)
-  {
-    if(this.WatchList.has(event))
-    {
-      this.WatchList.delete(event)
-    }
-    else
-    {
+  WishListEcentHandler(event: string) {
+    if (this.WatchList.has(event)) {
+      this.WatchList.delete(event);
+    } else {
       this.WatchList.add(event);
     }
   }

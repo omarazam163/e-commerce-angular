@@ -4,11 +4,12 @@ import { NavbarComponent } from './core/layout/navbar/navbar.component';
 import { initFlowbite } from 'flowbite';
 import { isPlatformBrowser } from '@angular/common';
 import { FlowbiteService } from './core/services/flowbite.service';
+import { FooterComponent } from "./core/layout/footer/footer.component";
 
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, NavbarComponent],
+  imports: [RouterOutlet, NavbarComponent, FooterComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })

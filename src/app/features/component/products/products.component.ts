@@ -11,6 +11,7 @@ import { LoaderComponent } from '../../../shared/component/loader/loader.compone
 import { SearchPipePipe } from '../../../core/pipes/search-pipe.pipe';
 import { brand } from '../../../shared/interfaces/brand';
 import { isPlatformBrowser } from '@angular/common';
+import { ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'app-products',
   imports: [
@@ -23,7 +24,7 @@ import { isPlatformBrowser } from '@angular/common';
   templateUrl: './products.component.html',
   styleUrl: './products.component.scss',
 })
- export class ProductsComponent {
+export class ProductsComponent {
   //options for the ngx slider
   minValue: number = 50;
   maxValue: number = 50000;
@@ -31,7 +32,7 @@ import { isPlatformBrowser } from '@angular/common';
     floor: 0,
     ceil: 50000,
     step: 1500,
-    };
+  };
 
   // services
   _auth = inject(AuthService);
@@ -44,11 +45,12 @@ import { isPlatformBrowser } from '@angular/common';
   wishList = new Set<string>();
   brands = signal<brand[]>([]);
   isbrower: boolean = false;
-
+  _activatedRoute = inject(ActivatedRoute);
+  paramMap = this._activatedRoute.snapshot.queryParamMap;
   //filter
-  SelectedCat = signal<string>('all');
+  SelectedCat = signal<string>(this.paramMap.get('category') || 'all');
   searchWord = signal<string>('');
-  selectedBrand = signal<string>('all');
+  selectedBrand = signal<string>(this.paramMap.get('brand')||'all');
 
   //accordion
   accordion = signal<boolean>(false);
