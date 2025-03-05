@@ -53,7 +53,7 @@ export class ProductsComponent {
   selectedBrand = signal<string>(this.paramMap.get('brand')||'all');
 
   //accordion
-  accordion = signal<boolean>(false);
+  accordion = signal<boolean>(true);
   ngOnInit() {
     this._auth.isLogin.subscribe((res) => {
       this.islogin.set(res);

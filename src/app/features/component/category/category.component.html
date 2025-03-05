@@ -14,14 +14,16 @@
                 </h3>
             </div>
             <div class="p-4 bg-gray-50">
-                <button class="w-full py-2 px-4 bg-blue-600 hover:bg-blue-700 text-white rounded-lg 
+                <a 
+                routerLink="/products" [queryParams]="{category: item.name}"
+                class="w-full py-2 px-4 bg-blue-600 hover:bg-blue-700 text-white rounded-lg 
                       transition-colors duration-200 flex items-center justify-center gap-2">
-                    <a routerLink="/products" [queryParams]="{category: item.name}">Explore</a>
+                    <a>Explore</a>
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M17 8l4 4m0 0l-4 4m4-4H3" />
                     </svg>
-                </button>
+                </a>
             </div>
         </div>
         }

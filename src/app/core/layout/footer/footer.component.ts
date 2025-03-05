@@ -4,8 +4,10 @@ import { Component } from '@angular/core';
   selector: 'app-footer',
   imports: [],
   templateUrl: './footer.component.html',
-  styleUrl: './footer.component.scss'
+  styleUrl: './footer.component.scss',
 })
 export class FooterComponent {
-
+  scrollToTop() {
+    window.scrollTo({ top: 0, behavior: 'smooth' }); // Smooth scroll to top
+  }
 }
